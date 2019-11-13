@@ -15,7 +15,7 @@ WiFiClient espClient;
 coapClient coap;
 
 //IP e porta padrão do servidor que receberá a requisição (utilizado apenas se nenhum serviço for encontrado)
-IPAddress ip(192,168,10,5);
+IPAddress ip(192,168,4,9);
 int port = 5683;
 
 // coap client response callback

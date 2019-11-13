@@ -14,17 +14,13 @@ void callback_light(coapPacket &packet, IPAddress ip, int port, int obs);
 WiFiClient espClient;
 coapServer coap;
 
-int randNumber;
-
 // LED STATE
 bool LEDSTATE;
 
 // CoAP server endpoint URL
 void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
   
-  randNumber = random(10, 99);
   Serial.println("Hello Word!");
-  Serial.println(randNumber);
 
   // send response
   char p[packet->payloadlen + 1];
@@ -44,7 +40,7 @@ void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
     digitalWrite(16,HIGH);
     Serial.println("else loop");
   } 
-  char *light = (digitalRead(16) > 0)? ((char *) "1") :((char *) "0");
+  char *light = "Oi,oi,oi,oi";
   
    //coap.sendResponse(packet, ip, port, light);
    if(obs==1)
