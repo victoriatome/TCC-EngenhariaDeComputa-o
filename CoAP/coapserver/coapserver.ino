@@ -40,7 +40,7 @@ void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
     digitalWrite(16,HIGH);
     Serial.println("else loop");
   } 
-  char *light = "Oi,oi,oi,oi";
+  char *light = "Constrained Application Protocol (CoAP) is a specialized Internet Application Protocol for constrained devices, as defined in RFC 7252. It enables those constrained devices called nodes to communicate with the wider Internet using similar protocols. CoAP is designed for use between devices on the same constrained network (e.g., low-power, lossy networks), between devices and general nodes on the Internet, and between devices on different constrained networks both joined by an internet. CoAP is also being used via other mechanisms, such as SMS on mobile communication networks.";
   
    //coap.sendResponse(packet, ip, port, light);
    if(obs==1)

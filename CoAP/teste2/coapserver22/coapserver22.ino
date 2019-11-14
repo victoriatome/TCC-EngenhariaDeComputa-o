@@ -1,34 +1,33 @@
-#include <coap_server.h>
 #include <ESP8266WiFi.h>
+#include <coap_server.h>
 #include <ESP8266mDNS.h>
-
 
 const char *SSID = "TCC";          // SSID da sua rede Wi-Fi
 const char *PASSWORD = "11041994"; // Senha da sua rede Wi-Fi
 
-const char *idESP = "nodemcuserver";
+const char *idESP = "nodemcuserver2";
 
-// CoAP response callback
+// CoAP server endpoint url callback
 void callback_light(coapPacket &packet, IPAddress ip, int port, int obs);
 
 //Variáveis e objetos globais
 WiFiClient espClient;
 coapServer coap;
 
-int randNumber; // variável para amarzenar numero aleatório
-
 // LED STATE
 bool LEDSTATE;
 
 // CoAP server endpoint URL
-void callback_light(coapPacket &packet, IPAddress ip, int port, int obs) {
- Serial.println("[Light] ON/OFF");
+void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
   
+  Serial.println("Hello Word!");
+
   // send response
-  char p[packet.payloadlen + 1];
-  memcpy(p, packet.payload, packet.payloadlen);
-  p[packet.payloadlen] = NULL;
-  
+  char p[packet->payloadlen + 1];
+  memcpy(p, packet->payload, packet->payloadlen);
+  p[packet->payloadlen] = NULL;
+  Serial.println(p);
+
   String message(p);
 
   if (message.equals("0"))
@@ -41,14 +40,17 @@ void callback_light(coapPacket &packet, IPAddress ip, int port, int obs) {
     digitalWrite(16,HIGH);
     Serial.println("else loop");
   } 
-  char *light = (digitalRead(16) > 0)? ((char *) "1") :((char *) "0");
+  char *light = "Constrained Application Protocol (CoAP) is a specialized Internet Application Protocol for constrained devices, as defined in RFC 7252. It enables those constrained devices called nodes to communicate with the wider Internet using similar protocols. CoAP is designed for use between devices on the same constrained network (e.g., low-power, lossy networks), between devices and general nodes on the Internet, and between devices on different constrained networks both joined by an internet. CoAP is also being used via other mechanisms, such as SMS on mobile communication networks.";
   
    //coap.sendResponse(packet, ip, port, light);
    if(obs==1)
     coap.sendResponse(light);
    else
     coap.sendResponse(ip,port,light);
+ 
 }
+
+
 
 void callback_lightled(coapPacket *packet, IPAddress ip, int port,int obs) {
   Serial.println("Lightled");
@@ -82,6 +84,7 @@ void callback_lightled(coapPacket *packet, IPAddress ip, int port,int obs) {
     //coap.sendResponse("0");
   }
 }
+
 
 // Inicia a comunicação serial
 void initSerial()
@@ -157,7 +160,7 @@ void setup()
   initmDNS();
   initCOAP();
 
-  // LED State
+// LED State
   pinMode(16, OUTPUT);
   digitalWrite(16, HIGH);
   LEDSTATE = true;
@@ -171,18 +174,13 @@ void setup()
   // can add multiple endpoint urls.
   coap.server(callback_light, "light");
   coap.server(callback_lightled, "lightled");
-
+ 
   // start coap server/client
   coap.start();
-
-  randomSeed(analogRead(0));
 }
 
 void loop() {
 
-  randNumber = random(10, 99);  // escolhe número aleatório no intervalo de 10 a 99
-  Serial.println(randNumber); // envia número aleatório pela Serial
-  
   coap.loop();
   delay(1000);
 }

@@ -18,8 +18,25 @@ coapClient coap;
 IPAddress ip(192,168,4,6);
 int port = 5683;
 
+IPAddress ip2 (192,168,4,6);
+
 // coap client response callback
 void callback_response(coapPacket &packet, IPAddress ip, int port) {
+    char p[packet.payloadlen + 1];
+    memcpy(p, packet.payload, packet.payloadlen);
+    p[packet.payloadlen] = NULL;
+    String message(p);
+
+    //response from coap server
+    if(packet.type==3 && packet.code==0){
+      Serial.println("ping ok");
+    }
+
+    Serial.println(p);
+}
+
+// coap client response callback
+void callback_response2(coapPacket &packet, IPAddress ip2, int port) {
     char p[packet.payloadlen + 1];
     memcpy(p, packet.payload, packet.payloadlen);
     p[packet.payloadlen] = NULL;
@@ -88,6 +105,9 @@ void initWiFi()
       // Utiliza apenas o endereço do primeiro serviço encontrado para realizar a comunicação.
       ip = MDNS.IP(0);
       port = MDNS.port(0);
+
+      ip2 = MDNS.IP(0);
+      port = MDNS.port(0);
     }
   }
 
@@ -131,10 +151,13 @@ void setup()
   // this endpoint is single callback.
   Serial.println("Setup Response Callback");
   coap.response(callback_response);
+  coap.response(callback_response2);
   
   initCOAP();
   
   int msgid = coap.get(ip,port,"light");
+
+  int msgid2 = coap.get(ip2,port,"light");
 
 }
 
@@ -144,6 +167,8 @@ void loop()
   coap.loop();
   
   coap.get(ip,port,"light");
+  delay(500);
+  coap.get(ip2,port,"light");
   
   delay(5000);
 }
