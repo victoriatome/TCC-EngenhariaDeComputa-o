@@ -1,8 +1,8 @@
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 
-const char *SSID = "Nuclic";          // SSID da sua rede Wi-Fi
-const char *PASSWORD = "nuclic@19"; // Senha da sua rede Wi-Fi
+const char *SSID = "TCC";          // SSID da sua rede Wi-Fi
+const char *PASSWORD = "11041994"; // Senha da sua rede Wi-Fi
 
 const char *ID_MQTT = "nodemcuClient"; // Identificação para o dispositivo
 

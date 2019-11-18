@@ -1,8 +1,8 @@
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 
-const char *SSID = "Nuclic";          // SSID da sua rede Wi-Fi
-const char *PASSWORD = "nuclic@19"; // Senha da sua rede Wi-Fi
+const char *SSID = "TCC";          // SSID da sua rede Wi-Fi
+const char *PASSWORD = "11041994"; // Senha da sua rede Wi-Fi
 
 const char *ID_MQTT = "nodemcuServer"; // Identificação para o dispositivo
 
@@ -62,6 +62,7 @@ void initMQTT()
   Serial.println("Aguarde");
   client.setServer(BROKER_MQTT, 1883);
   Serial.println("Conectado com sucesso ao broker MQTT!");
+  //client.publish(topic, "hello from ESP8266");
     
 }
 
@@ -75,6 +76,7 @@ void reconnectMQTT()
     if (client.connect(ID_MQTT))
     {
       Serial.println("Conectado com sucesso ao broker MQTT!");
+      //client.publish(topic, "hello from ESP8266");
     }
     else
     {
@@ -135,9 +137,9 @@ void loop()
   //garante funcionamento das conexões WiFi e ao broker MQTT
   VerificaConexoesWiFIEMQTT();
 
-  client.publish(topic, "MQTT, acrônimo de Message Queuing Telemetry Transport anteriormente conhecido como MQ Telemetry Transport), é um protocolo de mensagens leve para sensores e pequenos dispositivos móveis otimizado para redes TCP/IP.[2] . O esquema de troca de mensagens é fundamentado no modelo Publicador-Subscritor, extremamente simples e leve. Os princípios arquitetônicos são minimizar o uso de banda de rede e uso de recursos dos equipamentos enquanto garantindo confiabilidade e algum nível de garantia de entrega. Estes princípios tornam esse protocolo ideal para as comunicações emergentes (M2M) “machine-to-machine” e para as aplicações “Internet of Things” (Internet das coisas) um mundo de equipamentos conectados, além das aplicações mobile onde banda e potência da bateria são relevantes.");
+  client.publish(topic, "hello from ESP8266");
   
   client.loop(); //loop MQTT
 
-  delay(1000);
+  delay(500);
 }
