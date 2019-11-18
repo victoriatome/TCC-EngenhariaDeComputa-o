@@ -18,7 +18,10 @@ coapClient coap;
 IPAddress ip(192,168,4,6);
 int port = 5683;
 
+//IP e porta padrão do servidor que receberá a requisição (utilizado apenas se nenhum serviço for encontrado)
 IPAddress ip2 (192,168,4,6);
+int port2 = 5683;
+
 
 // coap client response callback
 void callback_response(coapPacket &packet, IPAddress ip, int port) {
@@ -36,18 +39,18 @@ void callback_response(coapPacket &packet, IPAddress ip, int port) {
 }
 
 // coap client response callback
-void callback_response2(coapPacket &packet, IPAddress ip2, int port) {
-    char p[packet.payloadlen + 1];
-    memcpy(p, packet.payload, packet.payloadlen);
-    p[packet.payloadlen] = NULL;
-    String message(p);
+void callback_response2(coapPacket &packet, IPAddress ip2, int port2) {
+    char p2[packet.payloadlen + 1];
+    memcpy(p2, packet.payload, packet.payloadlen);
+    p2[packet.payloadlen] = NULL;
+    String message2(p2);
 
     //response from coap server
     if(packet.type==3 && packet.code==0){
       Serial.println("ping ok");
     }
 
-    Serial.println(p);
+    Serial.println(p2);
 }
 
 // Inicia a comunicação serial
@@ -157,7 +160,7 @@ void setup()
   
   int msgid = coap.get(ip,port,"light");
 
-  int msgid2 = coap.get(ip2,port,"light");
+  int msgid2 = coap.get(ip2,port2,"light");
 
 }
 
@@ -168,7 +171,8 @@ void loop()
   
   coap.get(ip,port,"light");
   delay(500);
-  coap.get(ip2,port,"light");
+  
+  coap.get(ip2,port2,"light");
   
   delay(5000);
 }

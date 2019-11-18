@@ -40,7 +40,7 @@ void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
     digitalWrite(16,HIGH);
     Serial.println("else loop");
   } 
-  char *light = "Hello from ESP8266. Hello from ESP8266. Hello from ESP8266. Hello from ESP8266. ";
+  char *light = "Oi para ESP8266. Oi para ESP8266. Oi para ESP8266. Oi para ESP8266. Oi para ESP8266.";
   
    //coap.sendResponse(packet, ip, port, light);
    if(obs==1)
