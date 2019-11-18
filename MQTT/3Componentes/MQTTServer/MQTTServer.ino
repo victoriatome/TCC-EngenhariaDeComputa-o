@@ -137,7 +137,7 @@ void loop()
   //garante funcionamento das conexões WiFi e ao broker MQTT
   VerificaConexoesWiFIEMQTT();
 
-  client.publish(topic, "Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266.Oi para o ESP8266.Oi para o ESP8266.");
+  client.publish(topic, "Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266.");
   
   client.loop(); //loop MQTT
 

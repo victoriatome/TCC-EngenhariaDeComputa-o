@@ -4,7 +4,7 @@
 const char *SSID = "TCC";          // SSID da sua rede Wi-Fi
 const char *PASSWORD = "11041994"; // Senha da sua rede Wi-Fi
 
-const char *ID_MQTT = "nodemcuServer"; // Identificação para o dispositivo
+const char *ID_MQTT = "nodemcuClient"; // Identificação para o dispositivo
 
 //Broker MQTT
 const char *BROKER_MQTT = "raspberrypi.local"; // Endereço do servidor MQTT
@@ -19,14 +19,19 @@ const char *topic = "Mensagem";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+// variável para armazenar o dado recebido
+char msg[50];
+
 // MQTT response callback
-void callback_mqtt(char* msgtopic, byte* payload, unsigned int length) {
-  byte* p = (byte*)malloc(length);
-  memcpy(p,payload,length);
-  client.publish(topic, p, length);
-  
+void callback_mqtt(char *msgtopic, byte *payload, unsigned int length){
+  // Alocação de memória
+  byte *p = (byte *)malloc(length);
+  // Copia para novo buffer
+  memcpy(p, payload, length);
+  client.subscribe(topic);
+  // Libera a memória
   free(p);
-}
+};
 
 // Inicia a comunicação serial
 void initSerial()
@@ -54,6 +59,7 @@ void initWiFi()
   Serial.println(WiFi.localIP());
 }
 
+
 //Inicializa parâmetros de conexão MQTT
 void initMQTT()
 {
@@ -62,8 +68,7 @@ void initMQTT()
   Serial.println("Aguarde");
   client.setServer(BROKER_MQTT, 1883);
   Serial.println("Conectado com sucesso ao broker MQTT!");
-  //client.publish(topic, "hello from ESP8266");
-    
+  client.subscribe(topic); 
 }
 
 //Reconecta-se ao broker MQTT
@@ -76,7 +81,7 @@ void reconnectMQTT()
     if (client.connect(ID_MQTT))
     {
       Serial.println("Conectado com sucesso ao broker MQTT!");
-      //client.publish(topic, "hello from ESP8266");
+      client.subscribe(topic);
     }
     else
     {
@@ -123,11 +128,10 @@ void setup()
   initSerial();
   
   initWiFi();
- 
+  
   initMQTT();
 
   client.setCallback(callback_mqtt);
-  
 }
 
 
@@ -137,9 +141,7 @@ void loop()
   //garante funcionamento das conexões WiFi e ao broker MQTT
   VerificaConexoesWiFIEMQTT();
 
-  client.publish(topic, "Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266. Oi para o ESP8266.Oi para o ESP8266.Oi para o ESP8266.");
-  
-  client.loop(); //loop MQTT
+  client.loop();
 
-  delay(500);
+   delay(1000);
 }
