@@ -19,7 +19,7 @@ IPAddress ip(192,168,4,6);
 int port = 5683;
 
 //IP e porta padrão do servidor que receberá a requisição (utilizado apenas se nenhum serviço for encontrado)
-IPAddress ip2 (192,168,4,6);
+IPAddress ip2 (192,168,4,9);
 int port2 = 5683;
 
 
@@ -108,9 +108,35 @@ void initWiFi()
       // Utiliza apenas o endereço do primeiro serviço encontrado para realizar a comunicação.
       ip = MDNS.IP(0);
       port = MDNS.port(0);
+    }
 
+    if (MDNS.begin(idESP))
+    {
+      Serial.println("mDNS iniciado");
+    }
+  
+    //Descobre qual ip e porta do servidor coap (esp1)
+    int n2 = MDNS.queryService("coap","udp");
+    if (n2 == 0) {
+      Serial.println("serviço não encontrado");
+    }
+    else {
+      Serial.print(n2);
+      Serial.println(" serviço(s) encrontrado(s)");
+      for (int i2 = 0; i2 < n2; ++i2) {
+        // Mostra na serial o(s) serviço(s) encontrado(s)
+        Serial.print(i2 + 1);
+        Serial.print(": ");
+        Serial.print(MDNS.hostname(i2));
+        Serial.print(" (");
+        Serial.print(MDNS.IP(i2));
+        Serial.print(":");
+        Serial.print(MDNS.port(i2));
+        Serial.println(")");
+      }
+      // Utiliza apenas o endereço do primeiro serviço encontrado para realizar a comunicação.
       ip2 = MDNS.IP(0);
-      port = MDNS.port(0);
+      port2 = MDNS.port(0);
     }
   }
 
