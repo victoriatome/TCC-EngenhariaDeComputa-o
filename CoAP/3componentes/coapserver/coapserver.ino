@@ -20,7 +20,8 @@ bool LEDSTATE;
 // CoAP server endpoint URL
 void callback_light(coapPacket *packet, IPAddress ip, int port,int obs) {
   
-  Serial.println("Hello Word!");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
 
   // send response
   char p[packet->payloadlen + 1];
