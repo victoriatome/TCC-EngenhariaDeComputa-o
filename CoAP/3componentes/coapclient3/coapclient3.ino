@@ -196,9 +196,10 @@ void loop()
   coap.loop();
   
   coap.get(ip,port,"light");
-  delay(500);
+  
+  delay(50);
   
   coap.get(ip2,port2,"light");
   
-  delay(5000);
+  delay(1000);
 }

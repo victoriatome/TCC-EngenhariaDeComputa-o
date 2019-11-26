@@ -141,5 +141,5 @@ void loop()
   
   client.loop(); //loop MQTT
 
-  delay(500);
+  delay(1000);
 }

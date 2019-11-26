@@ -145,5 +145,5 @@ void loop()
   
   coap.get(ip,port,"light");
   
-  delay(5000);
+  delay(1000);
 }
